@@ -22,7 +22,8 @@ defmodule Bob do
   end
 
   defp shouting(input) do
-    if all_caps(input) and contains_char(input) do
+    if all_caps(input) and not just_numbers(input) do
+    # contains_char(input) do
     # and not String.match?(input, ~r/[0-9]/) do
       true
     else
@@ -40,8 +41,10 @@ defmodule Bob do
   end
 
   defp just_numbers(input) do
-    String.graphemes(input)
-    |> Enum.find(false, fn(x) -> String.match?(x, ~r/[0-9]/) end)
+    String.match?(input, ~r/^[0-9,\ ]*$/)
+    #
+    # String.graphemes(input)
+    # |> Enum.find(false, fn(x) -> String.match?(x, ~r/[0-9]/) end)
   end
 
   defp contains_char(input) do
