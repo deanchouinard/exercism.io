@@ -22,16 +22,31 @@ defmodule Bob do
   end
 
   defp shouting(input) do
-    # if String.ends_with?(input, "!") or 
-    if all_caps(input) do
-       true
-     else
-       false
-     end
+    if all_caps(input) and contains_char(input) do
+    # and not String.match?(input, ~r/[0-9]/) do
+      true
+    else
+      # if String.ends_with?(input, "!") do
+      #   true
+      # else
+      #   false
+      # end
+      false
+    end
   end
 
   defp all_caps(input) do
     input == String.upcase(input)
+  end
+
+  defp just_numbers(input) do
+    String.graphemes(input)
+    |> Enum.find(false, fn(x) -> String.match?(x, ~r/[0-9]/) end)
+  end
+
+  defp contains_char(input) do
+    String.graphemes(input)
+    |> Enum.find(false, fn(x) -> String.match?(x, ~r/[a-zA-Z]/) end)
   end
 
 end
