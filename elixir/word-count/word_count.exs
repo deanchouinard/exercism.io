@@ -7,12 +7,12 @@ defmodule Words do
   @spec count(String.t) :: map
   def count(sentence) do
 
-    String.split(sentence)
-    |> IO.inspect
+    String.split(sentence, [" ", "_"])
     |> Enum.reduce(%{}, &cnt_word/2)
   end
 
   def cnt_word(word, word_list) when word !== nil do
+    # IO.puts "Word: #{inspect word}"
     word = clean_word(word)
     case Map.fetch(word_list, word) do
       {:ok, _} ->
@@ -30,8 +30,9 @@ defmodule Words do
   def cnt_word(_, word_list), do: word_list
 
   defp clean_word(word) do
-    word = String.downcase(word)
-    word = String.replace(word, ~r/[\W]/, "")
+    String.downcase(word)
+    |> String.replace(~r/[^-\w]/u, "")
+    # String.replace(word, ~r/[^-\w]/, "")
   end
 
 end
