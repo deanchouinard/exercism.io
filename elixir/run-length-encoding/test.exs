@@ -22,7 +22,27 @@ defmodule Test do
     enc(tail, {current_char, count, out_str})
   end
 
+  def dec([head | tail], {num_str, out_str) do
+    cond do
+      String.match?(head, ~r/\d/) ->
+        num_str = num_str <> head
+      String.match?(head, ~r/[A-Z]/) ->
+        out_str = out_str <> expand(num_str, head)
+        num_str = ""
+    end
+    dec(tail, {num_str, out_str})
+  end
+
+      
+    cur_str = cur_str <> head
+    case String.match?(cur_str, ~r/\d+[A-Z]/) do
+      true ->
+
+    #String.split(string, ~r/\d+[A-Z]/)
+    #String.split(string, ~r/(?=[\d+][A-Z])/)
+    String.split(string, ~r/(?=[A-Z]\d+)/)
+  end
 end
 
-IO.puts Test.start("")
+IO.inspect Test.dec("1H2E12W1K")
 
