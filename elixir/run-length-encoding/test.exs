@@ -2,7 +2,8 @@ defmodule Test do
 
   def start(string) do
     String.graphemes(string)
-    |> enc({"", 1, ""})
+    |> dec({"", ""})
+    # |> enc({"", 1, ""})
   end
 
   def enc([], {current_char, _, _}) when current_char == "", do: ""
@@ -22,27 +23,28 @@ defmodule Test do
     enc(tail, {current_char, count, out_str})
   end
 
-  def dec([head | tail], {num_str, out_str) do
+  def dec([], {_, out_str}), do: out_str
+  def dec([head | tail], {num_str, out_str}) do
     cond do
       String.match?(head, ~r/\d/) ->
         num_str = num_str <> head
       String.match?(head, ~r/[A-Z]/) ->
-        out_str = out_str <> expand(num_str, head)
+        num = String.to_integer(num_str)
+        out_str = out_str <> expand(head, num, "")
         num_str = ""
     end
     dec(tail, {num_str, out_str})
   end
 
-      
-    cur_str = cur_str <> head
-    case String.match?(cur_str, ~r/\d+[A-Z]/) do
-      true ->
-
-    #String.split(string, ~r/\d+[A-Z]/)
-    #String.split(string, ~r/(?=[\d+][A-Z])/)
-    String.split(string, ~r/(?=[A-Z]\d+)/)
+  defp expand(_, num, str) when num < 1 do
+    str
   end
+  defp expand(letter, num, str) do
+    str = str <> letter
+    expand(letter, num - 1, str)
+  end
+
 end
 
-IO.inspect Test.dec("1H2E12W1K")
+IO.inspect Test.start("1H2E12W1K")
 

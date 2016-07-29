@@ -14,7 +14,8 @@ defmodule RunLengthEncoder do
 
   @spec decode(String.t) :: String.t
   def decode(string) do
-
+    String.graphemes(string)
+    |> dec({"", ""})
   end
   
   def enc([], {current_char, _, _}) when current_char == "", do: ""
@@ -33,35 +34,26 @@ defmodule RunLengthEncoder do
     end
     enc(tail, {current_char, count, out_str})
   end
-end
+  
+  def dec([], {_, out_str}), do: out_str
+  def dec([head | tail], {num_str, out_str}) do
+    cond do
+      String.match?(head, ~r/\d/) ->
+        num_str = num_str <> head
+      String.match?(head, ~r/[A-Z]/) ->
+        num = String.to_integer(num_str)
+        out_str = out_str <> expand(head, num, "")
+        num_str = ""
+    end
+    dec(tail, {num_str, out_str})
+  end
 
-  # defp rle(c, out) when not null(c) do
-  #   case String.last(out) == c do
-  #     true ->
-  #       len = String.length(out)
-  #       count = String.to_integer(String.slice(len - 1, 1))
-  #
-  #     false ->
-  #       out <> "1" <> c
-  # end
-  #
-  # defp rle(_, out), do: out
-  #
-  #
-  # enc(graphemes) do
-  #   current_letter
-  #   count
-  #   str
-  #   enc2(cu
-  #
-  #   2 sum functions
-  #   first sums/builds output string
-  #     second sums each letter
-  #       when letter is same add 1
-  #
-  # def enc(graphemes), do: _enc(graphemes, "")
-  # defp _enc([head | tail], oustr) do
-  #   _enc(tail, head <> oustr)
-  # end
-  #
+  defp expand(_, num, str) when num < 1 do
+    str
+  end
+  defp expand(letter, num, str) do
+    str = str <> letter
+    expand(letter, num - 1, str)
+  end
+end
 
