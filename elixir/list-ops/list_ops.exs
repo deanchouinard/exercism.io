@@ -8,13 +8,21 @@ defmodule ListOps do
 
   @spec count(list) :: non_neg_integer
   def count(l) do
-    _count(l, 0)
+    _count(l)
   end
 
-  defp _count([], n), do: n
-  defp _count([head | tail], n) do
-    _count(tail, n + 1)
+  defp _count([]), do: 0
+  defp _count([head | tail]) do
+    1 + _count(tail)
   end
+
+  #   _count(l, 0)
+  # end
+  #
+  # defp _count([], n), do: n
+  # defp _count([head | tail], n) do
+  #   _count(tail, n + 1)
+  # end
 
   @spec reverse(list) :: list
   def reverse(l) do
@@ -39,19 +47,40 @@ defmodule ListOps do
 
   @spec filter(list, (any -> as_boolean(term))) :: list
   def filter(l, f) do
+    _filter(l, f)
+  end
 
+  defp _filter([], f), do: []
+  defp _filter([head | tail], f) do
+    cond do
+      f.(head) ->
+        [ head | _filter(tail, f)]
+      true ->
+        _filter(tail, f)
+    end
   end
 
   @type acc :: any
   @spec reduce(list, acc, ((any, acc) -> acc)) :: acc
   def reduce(l, acc, f) do
+    _reduce(l, acc, f)
+  end
 
+  defp _reduce([], acc, _), do: acc
+  defp _reduce([head | tail], acc, f) do
+    # acc = f.(head, acc)
+    _reduce(tail, f.(head, acc), f)
   end
 
   @spec append(list, list) :: list
   def append(a, b) do
-
+    _append(a, b)
   end
+
+  defp _append([], []), do: []
+  defp _append([], b), do: b
+  defp _append(a, []), do: a
+  defp _append(a, b), do: [a, b]
 
   @spec concat([[any]]) :: [any]
   def concat(ll) do
