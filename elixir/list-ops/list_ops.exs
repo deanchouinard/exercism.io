@@ -80,10 +80,22 @@ defmodule ListOps do
   defp _append([], []), do: []
   defp _append([], b), do: b
   defp _append(a, []), do: a
-  defp _append(a, b), do: [a, b]
+  defp _append(a, b) do
+    a = reverse(a)
+    prepend(b, a)
+  end
+  defp prepend(b, []), do: b
+  defp prepend(b, [head | tail]) do
+    prepend([head | b], tail)
+  end
+
 
   @spec concat([[any]]) :: [any]
   def concat(ll) do
-
+    _concat(ll)
   end
+
+  defp _concat([]), do: []
+  defp _concat([head | tail]) do
+    rconcat(reduce(head, [], 
 end
