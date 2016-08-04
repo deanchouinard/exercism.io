@@ -12,17 +12,9 @@ defmodule ListOps do
   end
 
   defp _count([]), do: 0
-  defp _count([head | tail]) do
+  defp _count([_head | tail]) do
     1 + _count(tail)
   end
-
-  #   _count(l, 0)
-  # end
-  #
-  # defp _count([], n), do: n
-  # defp _count([head | tail], n) do
-  #   _count(tail, n + 1)
-  # end
 
   @spec reverse(list) :: list
   def reverse(l) do
@@ -40,7 +32,7 @@ defmodule ListOps do
     _map(l, f)
   end
   
-  defp _map([], f), do: []
+  defp _map([], _), do: []
   defp _map([head | tail], f) do
     [f.(head) | _map(tail, f)]
   end
@@ -50,7 +42,7 @@ defmodule ListOps do
     _filter(l, f)
   end
 
-  defp _filter([], f), do: []
+  defp _filter([], _), do: []
   defp _filter([head | tail], f) do
     cond do
       f.(head) ->
@@ -68,7 +60,6 @@ defmodule ListOps do
 
   defp _reduce([], acc, _), do: acc
   defp _reduce([head | tail], acc, f) do
-    # acc = f.(head, acc)
     _reduce(tail, f.(head, acc), f)
   end
 
@@ -76,7 +67,7 @@ defmodule ListOps do
   def append(a, b) do
     _append(a, b)
   end
-
+  
   defp _append([], []), do: []
   defp _append([], b), do: b
   defp _append(a, []), do: a
@@ -84,11 +75,11 @@ defmodule ListOps do
     a = reverse(a)
     prepend(b, a)
   end
+
   defp prepend(b, []), do: b
   defp prepend(b, [head | tail]) do
     prepend([head | b], tail)
   end
-
 
   @spec concat([[any]]) :: [any]
   def concat(ll) do
@@ -97,5 +88,7 @@ defmodule ListOps do
 
   defp _concat([]), do: []
   defp _concat([head | tail]) do
-    rconcat(reduce(head, [], 
+    append(head, _concat(tail))
+  end
+
 end
