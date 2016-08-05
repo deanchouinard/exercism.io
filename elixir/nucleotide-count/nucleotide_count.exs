@@ -39,6 +39,12 @@ defmodule DNA do
   """
   @spec histogram([char]) :: map
   def histogram(strand) do
-
+    hg = %{?A => 0, ?T => 0, ?C => 0, ?G => 0}
+    _histogram(strand, hg)
   end
+  defp _histogram([], hg), do: hg
+  defp _histogram(chars, hg) do
+    Enum.each(chars, fn(c) ->
+      case c do
+        ?A -> Map.update(hg
 end
