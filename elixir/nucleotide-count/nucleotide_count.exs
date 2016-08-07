@@ -16,10 +16,13 @@ defmodule DNA do
   def count(strand, nucleotide) do
     _count(strand, nucleotide)
   end
+  defp _count(_, nuc) when not nuc in @nucleotides, do: raise ArgumentError
   defp _count([], _), do: 0
   defp _count(chars, nuc) do
     Enum.reduce(chars, 0, fn(c, acc) ->
       cond do
+        not c in @nucleotides ->
+          raise ArgumentError
         c == nuc ->
           acc = acc + 1
         true ->
@@ -44,7 +47,15 @@ defmodule DNA do
   end
   defp _histogram([], hg), do: hg
   defp _histogram(chars, hg) do
-    Enum.each(chars, fn(c) ->
+    Enum.reduce(chars, hg, fn(c, hg) ->
       case c do
-        ?A -> Map.update(hg
+        ?A -> Map.update!(hg, ?A, &(&1 + 1))
+        ?T -> Map.update!(hg, ?T, &(&1 + 1))
+        ?C -> Map.update!(hg, ?C, &(&1 + 1))
+        ?G -> Map.update!(hg, ?G, &(&1 + 1))
+        _ -> raise ArgumentError, message: "invalid argument"
+      end
+    end)
+  end
+
 end
