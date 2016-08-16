@@ -15,8 +15,17 @@ defmodule SpaceAge do
         calc_age(seconds, 0.2408467)
       :venus ->
         calc_age(seconds, 0.61519726)
+      :mars ->
+        calc_age(seconds, 1.8808158)
+      :jupiter ->
+        calc_age(seconds, 11.862615)
+      :saturn ->
+        calc_age(seconds, 29.447498)
+      :uranus ->
+        calc_age(seconds, 84.016846)
+      :neptune ->
+        calc_age(seconds, 164.79132)
     end
-
   end
 
   defp calc_age(seconds, earth_years) do
