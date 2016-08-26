@@ -7,30 +7,19 @@ defmodule Sublist do
   def compare([], [nil]), do: :sublist
   def compare([nil], []), do: :superlist
   def compare(a, b) do
-    if a == b do
-      :equal
-    else
-      if _compare(a, b, Enum.count(a)) do
-        :sublist
-      else
-        if _compare(b, a, Enum.count(b)) do
-          :superlist
-        else
-          :unequal
-        end
-      end
+    cond do
+      a == b -> :equal
+      _compare(a, b, Enum.count(a)) -> :sublist
+      _compare(b, a, Enum.count(b)) -> :superlist
+      true -> :unequal
     end
   end
 
   def _compare(a, b, a_count) do
-    if a_count > Enum.count(b) do
-      false
-    else
-      if a === Enum.slice(b, 0, a_count) do
-        true
-      else
-        _compare(a, tl(b), a_count)
-      end
+    cond do
+      a_count > Enum.count(b) -> false
+      a === Enum.slice(b, 0, a_count) -> true
+      true ->_compare(a, tl(b), a_count)
     end
   end
 end
