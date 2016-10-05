@@ -4,31 +4,28 @@ defmodule SumOfMultiples do
   """
   @spec to(non_neg_integer, [non_neg_integer]) :: non_neg_integer
   def to(limit, factors) do
-
-    _to(limit, factors, 0)
+    mults = MapSet.new
+    _to(limit, factors, mults)
   end
 
-  def _to(_, [], acc), do: acc
-  def _to(limit, factors, acc) when limit < hd(factors), do: acc
-  def _to(limit, factors, acc) do
-    acc = acc + facsum(limit, hd(factors), 0)
-    IO.puts acc
-    _to(limit, tl(factors), acc)
+  def _to(_, [], _mults), do: 0
+  def _to(limit, factors, _mults) when limit < hd(factors), do: 0
+  def _to(limit, factors, mults) do
+    {sum, mults} = facsum(limit, hd(factors), mults, 0, 0)
+    sum + _to(limit, tl(factors), mults)
   end
 
-  #  def facsum(limit, factor, acc) when acc + factor >= limit, do: acc
-  def facsum(limit, factor, acc) do
-    acc = if acc + factor < limit do
-      facsum(limit, factor, acc + factor)
+  def facsum(limit, _factor, mults, mult, sum) when mult >= limit, do: {sum,
+    mults}
+  def facsum(limit, factor, mults, mult, sum) do
+    {sum, mults} = if not MapSet.member?(mults, mult) do
+      mults = MapSet.put(mults, mult)
+      {sum + mult, mults}
     else
-      acc
+      {sum, mults}
     end
 
-    # acc = acc + factor
-    # case acc < limit
-    #   true -> facsum(limit, factor, acc)
-    #   _ ->
+    facsum(limit, factor, mults, mult + factor, sum)
   end
-
 
 end
