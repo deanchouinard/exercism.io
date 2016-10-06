@@ -4,12 +4,11 @@ defmodule SumOfMultiples do
   """
   @spec to(non_neg_integer, [non_neg_integer]) :: non_neg_integer
   def to(limit, factors) do
-    mults = MapSet.new
-    _to(limit, factors, mults)
+    _to(limit, factors, MapSet.new)
   end
 
-  def _to(_, [], _mults), do: 0
-  def _to(limit, factors, _mults) when limit < hd(factors), do: 0
+  def _to(_, [], _), do: 0
+  def _to(limit, factors, _) when limit < hd(factors), do: 0
   def _to(limit, factors, mults) do
     {sum, mults} = facsum(limit, hd(factors), mults, 0, 0)
     sum + _to(limit, tl(factors), mults)
