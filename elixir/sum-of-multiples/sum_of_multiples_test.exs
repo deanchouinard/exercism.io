@@ -1,5 +1,6 @@
 if !System.get_env("EXERCISM_TEST_EXAMPLES") do
-  Code.load_file("sum_of_multiples.exs", __DIR__)
+  Code.load_file("som.exs", __DIR__)
+  #Code.load_file("sum_of_multiples.exs", __DIR__)
 end
 
 ExUnit.start
