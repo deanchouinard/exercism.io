@@ -20,9 +20,21 @@ defmodule Phone do
   def number(raw) do
     raw
     |> String.graphemes
-    |> IO.inspect
-    |> Enum.filter(&match?(~r/[0-9]/, &1))
+    |> Enum.filter(&Regex.match?(~r/[0-9a-z]/, &1))
+    |> List.to_string
+    |> is_phonenumber
   end
+
+  defp is_phonenumber(phone_string) do
+    cond do
+      Regex.match?(~r/[a-z]/, phone_string) -> "0000000000"
+      String.length(phone_string) == 10 -> phone_string
+      String.length(phone_string) == 11 and String.at(phone_string, 0) == "1" ->
+        String.slice(phone_string, 1..-1)
+      true -> "0000000000"
+    end
+  end
+
 
   @doc """
   Extract the area code from a phone number
