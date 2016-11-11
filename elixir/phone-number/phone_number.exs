@@ -55,6 +55,11 @@ defmodule Phone do
   """
   @spec area_code(String.t) :: String.t
   def area_code(raw) do
+    case String.length(raw) do
+      10 -> String.slice(raw, 0..2)
+      11 -> String.slice(raw, 1..3)
+      _ -> "000"
+    end
   end
 
   @doc """
@@ -76,5 +81,10 @@ defmodule Phone do
   """
   @spec pretty(String.t) :: String.t
   def pretty(raw) do
+    ac = String.slice(raw, 0..2)
+    ex = String.slice(raw, 3..5)
+    sb = String.slice(raw, 6..9)
+    List.to_string( ["(", ac, ")", " ", ex, "-", sb])
+
   end
 end
