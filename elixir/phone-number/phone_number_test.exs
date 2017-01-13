@@ -57,7 +57,7 @@ defmodule PhoneTest do
     assert Phone.pretty("1234567890") == "(123) 456-7890"
   end
 
-  @tag :pending
+  # @tag :pending
   test "pretty print with full US phone number" do
     assert Phone.pretty("11234567890") == "(123) 456-7890"
   end

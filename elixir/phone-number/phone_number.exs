@@ -81,6 +81,11 @@ defmodule Phone do
   """
   @spec pretty(String.t) :: String.t
   def pretty(raw) do
+    raw = if String.length(raw) == 11 do
+      String.slice(raw, 1..-1)
+    else
+      raw
+    end
     ac = String.slice(raw, 0..2)
     ex = String.slice(raw, 3..5)
     sb = String.slice(raw, 6..9)
